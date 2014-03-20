@@ -1,0 +1,102 @@
+
+#include<iostream.h>
+#include<conio.h>
+#include<iomanip.h>
+#include<math.h>
+
+
+
+double degree,k=0,coefficient[10];
+
+double f(double x,double y)
+{
+    double f_xy=0;
+    k=0;
+    for(int c=degree;c>-1;c--)
+    {
+       for(int i=c;i>-1;i--)
+       {
+	  k++;
+
+	  if( (x!=0||(c-i)!=0)&&(y!=0||i!=0) )
+	  f_xy+=coefficient[k]*pow(y,i)*pow(x,(c-i));
+
+	  else if ( (x==0&&(c-i)==0)&&(y!=0||i!=0) )
+	  f_xy+=coefficient[k]*pow(y,i);
+
+	  else if ( (x!=0||(c-i)!=0)&&(y==0&&i==0) )
+	  f_xy+=coefficient[k]*pow(x,(c-i));
+
+	  else if ( (x==0&&(c-i)==0)&&(y==0||i==0) )
+	  f_xy+=coefficient[k];
+
+
+       }
+    }
+    return (f_xy);
+}
+
+
+
+int main()
+{
+    clrscr();
+    double x0,y0,xn,x,y,h,m1,m2,m3,m4;
+    int n;
+    cout<<setfill('_')<<setw(80)<<"_"<<endl ;
+    cout<<setfill(' ')<<setw(60)<<"RUNGE-KUTTA FOURTH ORDER METHOD"<<endl ;
+    cout<<setfill('_')<<setw(80)<<"_"<<endl ;
+    cout<<"Enter the degree of the function:"<<endl ;
+    cin>>degree;
+    for(int c=degree;c>-1;c--)
+    {
+        for(int i=c;i>-1;i--)
+        {
+           k++;
+           cout<<"Enter the coefficient of y^"<<i<<"*x^"<<c-i<<": ";
+           cin>>coefficient[k];            
+        }
+    }k=0;
+    cout<<"The polynomial function is : "<<endl;
+    for(c=degree;c>0;c--)
+    {
+	for(int i=c;i>-1;i--)
+        {
+	   k++;
+	   if(coefficient[k]!=0)
+           cout<<coefficient[k]<<"y^"<<i<<"*x^"<<c-i<<" + ";            
+        }
+    }
+    k++;
+    cout<<coefficient[k]<<endl;
+    cout<<"Enter initial values of x and y:"<<endl ;
+    cout<<"Enter x0:"<<endl ;
+    cin>>x0;
+    cout<<"Enter y0:"<<endl ;
+    cin>>y0;
+    cout<<"Enter upper limit for which y(x) is to be evaluated:"<<endl ;
+    cin>>xn ;
+    cout<<"Enter no. of intermediate values of y(x) to be evaluated:"<<endl ;
+    cin>>n;
+    cout<<"\nTable of values"<<endl ;
+    h=(xn-x0)/(n+1.0) ;
+    cout<<setfill('_')<<setw(41)<<"_"<<endl;
+    cout<<setfill(' ')<<setw(20)<<"x"<<setw(20)<<"y"<<endl;
+    cout<<setfill('_')<<setw(41)<<"_"<<endl;
+    x=x0;
+    y=y0;
+    cout<<setfill(' ') ;
+    for(int i=0;i<(n+2);i++)
+    {
+	m1=f(x,y);
+	m2=f(x+0.5*h,y+0.5*h*m1);
+	m3=f(x+0.5*h,y+0.5*h*m2);
+	m4=f(x+h,y+h*m3);
+	cout<<setw(20)<<x<<setw(20)<<y<<endl ;
+        y+=(h/6)*(m1+2*m2+2*m3+m4);
+        x+=h;
+    }
+    cout<<setfill('_')<<setw(41)<<"_"<<endl;
+    getch();
+    return 0;
+}
